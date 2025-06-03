@@ -2,22 +2,21 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Animación 3D con Three.js</title>
+  <title>Cubo AR</title>
   <style>
     body { margin: 0; overflow: hidden; }
     canvas { display: block; }
   </style>
 </head>
 <body>
-  <!-- Importa Three.js desde CDN -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
   <script>
-    // Escena, cámara y renderizador con transparencia
+    // Escena, cámara y renderizador transparente
     const escena = new THREE.Scene();
     const camara = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const render = new THREE.WebGLRenderer({ antialias: true, alpha: true }); // alpha: true para transparencia
+    const render = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     render.setSize(window.innerWidth, window.innerHeight);
-    render.setClearColor(0x000000, 0); // Color transparente
+    render.setClearColor(0x000000, 0); // Transparente
     document.body.appendChild(render.domElement);
 
     // Luz
@@ -25,27 +24,25 @@
     luz.position.set(5, 5, 5);
     escena.add(luz);
 
-    // Geometría y material
-    const geometria = new THREE.TetrahedronGeometry();
-    const material = new THREE.MeshStandardMaterial({ color: 0xff0000, flatShading: true });
+    // Geometría y material del cubo
+    const geometria = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
     const figura = new THREE.Mesh(geometria, material);
     escena.add(figura);
 
-    // Cámara
+    // Posición de la cámara
     camara.position.z = 3;
 
-    // Variables de animación
-    let tiempo = 0;
-
     // Animación
+    let tiempo = 0;
     function animar() {
       requestAnimationFrame(animar);
 
-      // Rotación continua
+      // Rotación del cubo
       figura.rotation.x += 0.01;
       figura.rotation.y += 0.015;
 
-      // Cambio de escala (pulso suave)
+      // Pulso suave
       const escala = 1 + 0.2 * Math.sin(tiempo);
       figura.scale.set(escala, escala, escala);
 
